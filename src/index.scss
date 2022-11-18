@@ -1,0 +1,41 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+.node-operator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 200px;
+  height: 38px;
+  padding: 0 5px;
+  border: 1px solid #1a192b;
+  border-radius: 2px;
+  cursor: grab;
+  box-sizing: border-box;
+  background-color: #fff;
+}
+
+.react-flow__handle {
+  width: 8px;
+  height: 8px;
+  border-radius: 1em;
+  background-color: #555;
+}
+
+.react-flow__handle-top {
+  top: -5px;
+}
+
+.react-flow__handle-bottom {
+  bottom: -5px;
+}
+
+.react-flow__handle-connecting {
+  background: #ff6060;
+}
+
+.react-flow__handle-valid {
+  background: #55dd99;
+}

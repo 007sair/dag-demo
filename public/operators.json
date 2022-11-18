@@ -1,0 +1,57 @@
+{
+  "operatorNames": ["JiushuHiveSourceSqlOperator", "SQLOperator", "FileSystemSQLSinkOperator"],
+  "operators": {
+    "JiushuHiveSourceSqlOperator": {
+      "type": "input",
+      "fixedArgs": {
+        "opName": "hive_source_original_sample",
+        "opType": "INPUT",
+        "opClass": "JiushuHiveSourceSqlOperator",
+        "input": "",
+        "output": ""
+      },
+      "properties": {
+        "tableName": "",
+        "condition": "",
+        "url_dag": "",
+        "url_feature_def": "",
+        "url_libfg": "",
+        "function": ""
+      }
+    },
+    "SQLOperator": {
+      "type": "default",
+      "fixedArgs": {
+        "opName": "hive_source_model_feature_sink_train",
+        "opType": "OPERATOR",
+        "opClass": "SQLOperator",
+        "input": "",
+        "output": ""
+      },
+      "properties": {
+        "tableName": "",
+        "condition": "",
+        "url_dag": "",
+        "url_feature_def": "",
+        "url_libfg": "",
+        "function": ""
+      }
+    },
+    "FileSystemSQLSinkOperator": {
+      "type": "output",
+      "fixedArgs": {
+        "opName": "hdfs_sink_train",
+        "opType": "SINK",
+        "opClass": "FileSystemSQLSinkOperator",
+        "input": "",
+        "output": ""
+      },
+      "properties": {
+        "fiedDetails": "",
+        "format": "",
+        "path": "",
+        "asdasdasd": ""
+      }
+    }
+  }
+}

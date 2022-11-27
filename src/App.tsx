@@ -1,6 +1,6 @@
 import { Box, ThemeProvider, createTheme } from "@mui/material";
-import { commonTheme } from "./theme";
 import { SnackbarProvider } from "notistack";
+import { commonTheme } from "./theme";
 
 import TopBar from "./layout/TopBar";
 import Sidebar from "./layout/Sidebar";
@@ -13,7 +13,6 @@ import "./index.scss";
 
 const App = () => {
   const theme = createTheme(commonTheme);
-
   return (
     <ThemeProvider theme={theme}>
       <SnackbarProvider autoHideDuration={3000}>

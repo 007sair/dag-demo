@@ -1,11 +1,12 @@
 import { useState } from "react";
 import { Box, Button, Modal, Stack } from "@mui/material";
-import useStore, { LocalStorageName } from "@/store";
+import useStore from "@/store";
 import ReactJson from "react-json-view";
 import { useSnackbar } from "notistack";
 import DataObjectIcon from "@mui/icons-material/DataObject";
 import ExportIcon from "@mui/icons-material/GetApp";
 import RemoveIcon from "@mui/icons-material/DoNotDisturb";
+import { LOCAL_STORAGE_NAME } from "@/const";
 
 export default () => {
   const store = useStore();
@@ -38,7 +39,7 @@ export default () => {
           size="small"
           startIcon={<RemoveIcon />}
           onClick={() => {
-            localStorage.removeItem(LocalStorageName);
+            localStorage.removeItem(LOCAL_STORAGE_NAME);
             enqueueSnackbar("本地存储已清除，请重新刷新浏览器。", {
               variant: "success",
               anchorOrigin: {

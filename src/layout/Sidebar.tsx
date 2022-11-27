@@ -1,5 +1,6 @@
 import { Box, Typography, Stack } from "@mui/material";
 import useOperatorJSON from "@/components/useOperatorJSON";
+import { DataTransferFormat as DTF } from "@/const";
 
 export default () => {
   const json = useOperatorJSON();
@@ -9,13 +10,13 @@ export default () => {
   }
 
   const onDragStart = (e: React.DragEvent<HTMLDivElement>, operatorName: string) => {
-    e.dataTransfer.setData("application/reactflow", operatorName);
+    e.dataTransfer.setData(DTF.operatorName, operatorName);
     e.dataTransfer.effectAllowed = "move";
 
     const { left, top } = e.currentTarget.getBoundingClientRect();
     // 鼠标与拖拽的元素之间的偏移量，在放下时使用
     const offset = { x: e.clientX - left, y: e.clientY - top };
-    e.dataTransfer.setData("offset", `${offset.x},${offset.y}`);
+    e.dataTransfer.setData(DTF.nodeOffset, `${offset.x},${offset.y}`);
   };
 
   return (

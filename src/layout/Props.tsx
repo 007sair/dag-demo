@@ -1,9 +1,8 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { Tabs, Tab, Box, Button } from "@mui/material";
 import useStore from "../store";
 import { Formik, Form, Field } from "formik";
 import { TextField } from "formik-mui";
-// import AutoSave from "./AutoSave";
 import { useSnackbar } from "notistack";
 
 interface TabPanelProps {
@@ -45,10 +44,11 @@ const renderField = (obj: Object, parent: string) => {
 };
 
 export default () => {
-  const [value, setValue] = useState(0);
-  const { activeNode, updateNodeOperator } = useStore();
-  const operator = activeNode?.data.operator;
   const { enqueueSnackbar } = useSnackbar();
+  const [value, setValue] = useState(0);
+  const { nodes, activeNodeId, updateNodeOperator } = useStore();
+  const activeNode = useMemo(() => nodes.find((node) => node.id === activeNodeId), [activeNodeId]);
+  const operator = activeNode?.data.operator;
 
   const handleTabChange = (_: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
@@ -65,7 +65,9 @@ export default () => {
       onSubmit={async (values, actions) => {
         try {
           console.log("submit", values);
-          updateNodeOperator(activeNode.id, values);
+          if (activeNodeId) {
+            updateNodeOperator(activeNodeId, values);
+          }
           actions.setSubmitting(false);
           enqueueSnackbar("保存成功", {
             variant: "success",

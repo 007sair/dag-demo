@@ -13,24 +13,23 @@ import {
   applyEdgeChanges,
 } from "reactflow";
 import { persist } from "zustand/middleware";
-
-export const LocalStorageName = "dag-demo";
+import { LOCAL_STORAGE_NAME } from "@/const";
 
 export type State = {
-  activeNode: Node<NodeData> | null;
+  activeNodeId: string | null;
   nodes: Node<NodeData>[];
   edges: Edge[];
   onNodesChange: OnNodesChange;
   onEdgesChange: OnEdgesChange;
   onConnect: OnConnect;
-  setActiveNode: (node: Node<NodeData> | null) => void;
+  setActiveNodeId: (nodeId: string | null) => void;
   updateNodeOperator: (nodeId: string, operator: Operator) => void;
 };
 
 const useStore = create(
   persist<State>(
     (set, get) => ({
-      activeNode: null,
+      activeNodeId: null,
       nodes: [],
       edges: [],
       onNodesChange: (changes: NodeChange[]) => {
@@ -48,20 +47,14 @@ const useStore = create(
           edges: addEdge(connection, get().edges),
         });
       },
-      setActiveNode: (node) => {
-        set({ activeNode: node });
+      setActiveNodeId: (nodeId) => {
+        set({ activeNodeId: nodeId });
       },
       updateNodeOperator: (nodeId: string, operator: Operator) => {
         set({
           nodes: get().nodes.map((node) => {
             if (node.id === nodeId) {
-              return {
-                ...node,
-                data: {
-                  ...node.data,
-                  operator,
-                },
-              };
+              return { ...node, data: { ...node.data, operator } };
             }
             return node;
           }),
@@ -69,7 +62,7 @@ const useStore = create(
       },
     }),
     {
-      name: LocalStorageName,
+      name: LOCAL_STORAGE_NAME,
     }
   )
 );

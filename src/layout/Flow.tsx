@@ -7,6 +7,7 @@ import { Drawer } from "@mui/material";
 import OperatorProps from "@/layout/Props";
 import { Box, Toolbar } from "@mui/material";
 import useOperatorJSON from "@/components/useOperatorJSON";
+import { DataTransferFormat as DTF } from "@/const";
 
 const drawerWidth = 400;
 
@@ -14,12 +15,8 @@ export default () => {
   const json = useOperatorJSON();
   const ref = useRef<HTMLDivElement>(null);
   const [rfInstance, setRfInstance] = useState<ReactFlowInstance | null>(null);
-  const { activeNode, nodes, edges, onConnect, onNodesChange, onEdgesChange, setActiveNode } = useStore();
-
-  const onDragOver: React.DragEventHandler<HTMLDivElement> = useCallback((e) => {
-    e.preventDefault();
-    e.dataTransfer.dropEffect = "move";
-  }, []);
+  const store = useStore();
+  const { activeNodeId, setActiveNodeId } = store;
 
   const onDrop: React.DragEventHandler<HTMLDivElement> = useCallback(
     (e) => {
@@ -27,10 +24,10 @@ export default () => {
       if (!ref.current || !rfInstance || !json) return;
 
       const rfBounds = ref.current.getBoundingClientRect();
-      const operatorName = e.dataTransfer.getData("application/reactflow") as string;
+      const operatorName = e.dataTransfer.getData(DTF.operatorName);
       const operator = json.operators[operatorName];
       const { type } = operator;
-      const [offsetX, offsetY] = e.dataTransfer.getData("offset").split(",");
+      const [offsetX, offsetY] = e.dataTransfer.getData(DTF.nodeOffset).split(",");
 
       // check if the dropped element is valid
       if (typeof type === "undefined" || !type || !rfBounds) {
@@ -55,23 +52,28 @@ export default () => {
     [json]
   );
 
+  const onDragOver: React.DragEventHandler<HTMLDivElement> = useCallback((e) => {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = "move";
+  }, []);
+
   return (
     <Box ref={ref} sx={{ flex: 1 }}>
       <ReactFlow
-        nodes={nodes}
-        edges={edges}
-        onNodesChange={onNodesChange}
-        onEdgesChange={onEdgesChange}
-        onConnect={onConnect}
+        nodes={store.nodes}
+        edges={store.edges}
+        onNodesChange={store.onNodesChange}
+        onEdgesChange={store.onEdgesChange}
+        onConnect={store.onConnect}
         onInit={setRfInstance}
         onDrop={onDrop}
         onDragOver={onDragOver}
         onNodeDoubleClick={(_, node) => {
-          setActiveNode(node);
+          setActiveNodeId(node.id);
         }}
         onPaneClick={() => {
-          if (activeNode) {
-            setActiveNode(null);
+          if (activeNodeId) {
+            setActiveNodeId(null);
           }
         }}
         proOptions={{
@@ -82,9 +84,8 @@ export default () => {
         <Background />
         <Controls />
         <MiniMap />
-
         <Drawer
-          open={!!activeNode}
+          open={!!activeNodeId}
           anchor="right"
           variant="persistent"
           sx={{

@@ -1,3 +1,6 @@
+/**
+ * 单个算子配置
+ */
 type Operator = {
   type: "input" | "default" | "output";
   fixedArgs: {
@@ -10,6 +13,17 @@ type Operator = {
   properties: object;
 };
 
+/**
+ * 算子JSON配置
+ */
+type OperatorJSON = {
+  operatorNames: string[];
+  operators: Record<string, Operator>;
+};
+
+/**
+ * ReactFlow Node节点配置
+ */
 type NodeData = {
   label: string;
   operator: Operator;
